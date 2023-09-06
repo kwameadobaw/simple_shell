@@ -33,6 +33,9 @@ int main(void)
             continue; // Empty input, prompt again
         }
 
+        char *command = strtok(input, " ");
+        char *arguments = strtok(NULL, " ");
+
         pid_t pid = fork(); // Create a child process
 
         if (pid < 0)
@@ -43,7 +46,7 @@ int main(void)
         else if (pid == 0)
         {
             // Child process
-            if (execlp(input, input, NULL) == -1)
+            if (execlp(command, command, arguments, NULL) == -1)
             {
                 perror("Command not found");
                 exit(1);
@@ -56,14 +59,15 @@ int main(void)
             waitpid(pid, &status, 0);
 
             if (WIFEXITED(status))
-	    {
-		int exit_code = WEXITSTATUS(status);
-		if (exit_code != 0)
-		{
-			printf("simple_shell: %s: exited with status %d\n", input, exit_code);
-		}
-		}
-	}
-	}
-	return (0);
+            {
+                int exit_code = WEXITSTATUS(status);
+                if (exit_code != 0)
+                {
+                    printf("simple_shell: %s: exited with status %d\n", command, exit_code);
+                }
+            }
+        }
+    }
+
+    return (0);
 }
