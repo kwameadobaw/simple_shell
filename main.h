@@ -10,4 +10,6 @@
 
 #define MAX_COMMAND_LENGTH 1024
 
+void execute_command(const char *input);
+
 #endif
