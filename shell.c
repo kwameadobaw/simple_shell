@@ -33,10 +33,11 @@ void execute_command(const char *input)
 	else
 	{
 		waitpid(pid, &status, 0);
-		
+
 		if (WIFEXITED(status))
 		{
 			int exit_code = WEXITSTATUS(status);
+
 			if (exit_code != 0)
 			{
 				printf("No such file or directory\n");
@@ -44,52 +45,51 @@ void execute_command(const char *input)
 		}
 	}
 }
+
 /**
- * main - Entry point for the simple shell program
- * Return: Always 0.
+ * handle_command_with_args - Handle command lines with arguments
+ * @input: The command to execute with arguments
 */
-int main(void)
+void handle_command_with_args(const char *input)
 {
-	char input[MAX_COMMAND_LENGTH];
-	size_t input_length;
+	pid_t pid;
+	int status;
 
-	while (1)
+	pid = fork();
+	if (pid < 0)
 	{
-		printf("simple_shell> ");
+		perror("Fork failed");
+		exit(1);
+	}
+	else if (pid == 0)
+	{
+		char *args[MAX_COMMAND_LENGTH];
+		char *token = strtok((char *)input, " ");
+		int arg_count = 0;
 
-		if (fgets(input, sizeof(input), stdin) == NULL)
+		while (token != NULL && arg_count < MAX_COMMAND_LENGTH - 1)
 		{
-			if (feof(stdin))
-			{
-				printf("\nGoodbye!\n");
-				exit(0);
-			}
-			else
-			{
-				perror("Error reading input");
-				exit(1);
-			}
+			args[arg_count++] = token;
+			token = strtok(NULL, " ");
 		}
+		args[arg_count] = NULL;
 
-		input_length = strlen(input);
-		if (input_length > 0 && input[input_length - 1] == '\n')
+		if (execvp(args[0], args) == -1)
 		{
-			input[input_length - 1] = '\0';
-		}
-
-		if (strcmp(input, "") == 0)
-		{
-			continue;
-		}
-		if (strchr(input, ' ') || strncmp(input, "/bin/", 5) != 0)
-		{
-			printf("No such file or directory\n");
-		}
-		else
-		{
-			execute_command(input);
+			perror("Command execution failed");
+			exit(1);
 		}
 	}
+	else
+	{
+		waitpid(pid, &status, 0);
 
-	return (0);
+		if (WIFEXITED(status))
+		{
+			int exit_code = WEXITSTATUS(status);
+
+			if (exit_code != 0)
+				printf("No such file or directory\n");
+		}
+	}
 }
