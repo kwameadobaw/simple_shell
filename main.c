@@ -45,4 +45,13 @@ int main(void)
 		}
 	}
 	return (0);
+		if (strchr(input, ' ') || strncmp(input, "/bin/", 5) != 0)
+		{
+			printf("No such file or directory\n");
+		}
+		else
+		{
+			execute_command(input);
+		}
+	}
 }
