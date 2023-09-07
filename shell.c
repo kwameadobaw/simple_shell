@@ -33,7 +33,7 @@ void execute_command(const char *input)
 	else
 	{
 		waitpid(pid, &status, 0);
-
+		
 		if (WIFEXITED(status))
 		{
 			int exit_code = WEXITSTATUS(status);
@@ -93,4 +93,3 @@ int main(void)
 
 	return (0);
 }
-
