@@ -45,22 +45,6 @@ void execute_command(const char *input)
 	}
 }
 /**
- * print_environment - Print the current environment variables
- *
- * This function prints each environment variable to the standard output.
-*/
-void print_environment()
-{
-	extern char **environ;
-	char **env = environ;
-
-	while (*env)
-	{
-		printf("%s\n", *env);
-		env++;
-	}
-}
-/**
  * main - Entry point for the simple shell program
  * Return: Always 0.
 */
@@ -72,12 +56,10 @@ int main(void)
 	while (1)
 	{
 		printf("simple_shell> ");
-
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
 			if (feof(stdin))
 			{
-				printf("\nGoodbye!\n");
 				exit(0);
 			}
 			else
@@ -105,9 +87,7 @@ int main(void)
 			print_environment();
 			continue;
 		}
-
 		execute_command(input);
 	}
 	return (0);
 }
-
