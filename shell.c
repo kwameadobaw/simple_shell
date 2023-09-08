@@ -17,12 +17,16 @@ void execute_command(const char *input)
 	}
 	else if (pid == 0)
 	{
-		char *args[4];
+		char *args[MAX_ARGUMENTS];
+		char *token = strtok((char *)input, " ");
+		int i = 0;
 
-		args[0] = "/bin/sh";
-		args[1] = "-c";
-		args[2] = (char *)input;
-		args[3] = NULL;
+		while (token != NULL)
+		{
+			args[i++] = token;
+			token = strtok(NULL, " ");
+		}
+		args[i] = NULL;
 
 		if (execvp(args[0], args) == -1)
 		{
@@ -34,62 +38,56 @@ void execute_command(const char *input)
 	{
 		waitpid(pid, &status, 0);
 
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 		{
-			int exit_code = WEXITSTATUS(status);
-
-			if (exit_code != 0)
-			{
-				printf("No such file or directory\n");
-			}
+			printf("Command execution failed\n");
 		}
 	}
 }
-
 /**
- * handle_command_with_args - Handle command lines with arguments
- * @input: The command to execute with arguments
+ * main - Entry point for the simple shell program
+ * Return: Always 0.
 */
-void handle_command_with_args(const char *input)
+int main(void)
 {
-	pid_t pid;
-	int status;
+	char input[MAX_COMMAND_LENGTH];
+	size_t input_length;
 
-	pid = fork();
-	if (pid < 0)
+	while (1)
 	{
-		perror("Fork failed");
-		exit(1);
-	}
-	else if (pid == 0)
-	{
-		char *args[MAX_COMMAND_LENGTH];
-		char *token = strtok((char *)input, " ");
-		int arg_count = 0;
-
-		while (token != NULL && arg_count < MAX_COMMAND_LENGTH - 1)
+		printf("simple_shell> ");
+		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
-			args[arg_count++] = token;
-			token = strtok(NULL, " ");
+			if (feof(stdin))
+			{
+				exit(0);
+			}
+			else
+			{
+				perror("Error reading input");
+				exit(1);
+			}
 		}
-		args[arg_count] = NULL;
-
-		if (execvp(args[0], args) == -1)
+		input_length = strlen(input);
+		if (input_length > 0 && input[input_length - 1] == '\n')
 		{
-			perror("Command execution failed");
-			exit(1);
+			input[input_length - 1] = '\0';
 		}
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-
-		if (WIFEXITED(status))
+		if (strcmp(input, "") == 0)
 		{
-			int exit_code = WEXITSTATUS(status);
-
-			if (exit_code != 0)
-				printf("No such file or directory\n");
+			continue;
 		}
+		if (strcmp(input, "exit") == 0)
+		{
+			printf("Goodbye!\n");
+			exit(0);
+		}
+		if (strcmp(input, "env") == 0)
+		{
+			print_environment();
+			continue;
+		}
+		execute_command(input);
 	}
+	return (0);
 }
