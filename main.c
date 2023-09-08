@@ -15,18 +15,12 @@ int main(void)
 		if (!fgets(input, sizeof(input), stdin))
 		{
 			if (feof(stdin))
-			{
-				printf("\nGoodbye!\n");
-				exit(0);
-			}
+				printf("\nGoodbye!\n"), exit(0);
 			else
-			{
-				perror("Error reading input");
-				exit(1);
-			}
+				perror("Error reading input"), exit(1);
 		}
 		input_length = strlen(input);
-		if (input_length > 0 && input[input_length -1] == '\n')
+		if (input_length > 0 && input[input_length - 1] == '\n')
 		{
 			input[input_length - 1] = '\0';
 		}
@@ -36,22 +30,13 @@ int main(void)
 		}
 
 		if (find_executable_path(input, full_path, sizeof(full_path)))
-		{
 			execute_command(full_path);
-		}
 		else
-		{
 			printf("No such file or directory\n");
-		}
 	}
+	if (strchr(input, ' ') || strncmp(input, "/bin/", 5) != 0)
+		printf("No such file or directory\n");
+	else
+		execute_command(input);
 	return (0);
-		if (strchr(input, ' ') || strncmp(input, "/bin/", 5) != 0)
-		{
-			printf("No such file or directory\n");
-		}
-		else
-		{
-			execute_command(input);
-		}
-	}
 }
