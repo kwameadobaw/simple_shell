@@ -17,18 +17,7 @@ void execute_command(const char *input)
 	}
 	else if (pid == 0)
 	{
-		char *args[MAX_ARGUMENTS];
-		char *token = strtok((char *)input, " ");
-		int i = 0;
-
-		while (token != NULL)
-		{
-			args[i++] = token;
-			token = strtok(NULL, " ");
-		}
-		args[i] = NULL;
-
-		if (execvp(args[0], args) == -1)
+		if (system(input) == -1)
 		{
 			perror("Command execution failed");
 			exit(1);
