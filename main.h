@@ -11,5 +11,6 @@
 #define MAX_COMMAND_LENGTH 1024
 
 void execute_command(const char *input);
-int find_executable_path(const char *command, char *full_path, size_t size);
+void handle_command_with_args(const char *input);
+
 #endif
