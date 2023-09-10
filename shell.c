@@ -82,11 +82,6 @@ int main(void)
 			printf("Goodbye!\n");
 			exit(0);
 		}
-		if (strcmp(input, "env") == 0)
-		{
-			print_environment();
-			continue;
-		}
 		execute_command(input);
 	}
 	return (0);
