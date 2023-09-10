@@ -18,19 +18,19 @@ char *get_full_path(const char *command)
 	if (path == NULL)
 		return (NULL);
 
-	command_len = strlen(command);
-	path_len = strlen(path);
+	command_len = _strlen((char*)command);
+	path_len = _strlen(path);
 	path_copy = (char *)malloc(path_len + 1);
 
 	if (path_copy == NULL)
 		return (NULL);
 
-	strcpy(path_copy, path);
+	_strcpy(path_copy, path);
 	token = strtok_r(path_copy, ":", &saveptr);
 
 	while (token != NULL)
 	{
-		size_t token_len = strlen(token);
+		size_t token_len = _strlen(token);
 
 		full_path = (char *)malloc(token_len + 1 + command_len + 1);
 
@@ -39,9 +39,9 @@ char *get_full_path(const char *command)
 			free(path_copy);
 			return (NULL);
 		}
-		strcpy(full_path, token);
-		strcat(full_path, "/");
-		strcat(full_path, command);
+		_strcpy(full_path, token);
+		_strcat(full_path, "/");
+		_strcat(full_path, ((char *)command));
 
 		if (access(full_path, X_OK) == 0)
 		{
