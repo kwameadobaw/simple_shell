@@ -40,7 +40,7 @@ void execute_command(const char *input)
 
 		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 		{
-			printf("Command execution failed\n");
+			write(STDOUT_FILENO, "Command execution failed\n", 26);
 		}
 	}
 }
@@ -55,7 +55,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("simple_shell> ");
+		write(STDOUT_FILENO, "simple_shell> ", 14);
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
 			if (feof(stdin))
@@ -79,7 +79,7 @@ int main(void)
 		}
 		if (_strcmp(input, "exit") == 0)
 		{
-			printf("Goodbye!\n");
+			write(STDOUT_FILENO, "Goodbye!\n", 9);
 			exit(0);
 		}
 		execute_command(input);
