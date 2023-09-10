@@ -29,4 +29,5 @@ void print_environment()
 }
 void execute_command(const char *input);
 void print_environment();
+ssize_t my_getline(char *input, size_t max_length);
 #endif
