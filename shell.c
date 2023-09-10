@@ -68,7 +68,7 @@ int main(void)
 				exit(1);
 			}
 		}
-		input_length = strlen(input);
+		input_length = _strlen(input);
 		if (input_length > 0 && input[input_length - 1] == '\n')
 		{
 			input[input_length - 1] = '\0';
