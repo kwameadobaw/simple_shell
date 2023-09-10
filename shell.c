@@ -56,17 +56,10 @@ int main(void)
 	while (1)
 	{
 		write(STDOUT_FILENO, "simple_shell> ", 14);
-		if (fgets(input, sizeof(input), stdin) == NULL)
+		if (my_getline(input, sizeof(input)) == -1)
 		{
-			if (feof(stdin))
-			{
-				exit(0);
-			}
-			else
-			{
-				perror("Error reading input");
-				exit(1);
-			}
+			perror("Error reading input");
+			exit(1);
 		}
 		input_length = _strlen(input);
 		if (input_length > 0 && input[input_length - 1] == '\n')

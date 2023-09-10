@@ -14,5 +14,6 @@
 void execute_command(const char *input);
 int _strcmp(char *s1, char *s2);
 int _strlen(char *s);
+ssize_t my_getline(char *input, size_t max_length);
 
 #endif
