@@ -12,4 +12,5 @@
 #define MAX_ARGUMENTS 64
 
 void execute_command(const char *input);
+int _strcmp(char *s1, char *s2);
 #endif

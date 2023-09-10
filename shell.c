@@ -73,11 +73,11 @@ int main(void)
 		{
 			input[input_length - 1] = '\0';
 		}
-		if (strcmp(input, "") == 0)
+		if (_strcmp(input, "") == 0)
 		{
 			continue;
 		}
-		if (strcmp(input, "exit") == 0)
+		if (_strcmp(input, "exit") == 0)
 		{
 			printf("Goodbye!\n");
 			exit(0);
