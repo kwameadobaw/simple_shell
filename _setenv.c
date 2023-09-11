@@ -9,16 +9,17 @@
 */
 int _setenv(const char *name, const char *value, int overwrite)
 {
+	int name_length;
+	int value_length, i;
+
 	if (name == NULL || value == NULL)
 		return (-1);
 
-	int name_length = _strlen(name);
-	int value_length = _strlen(value);
+	name_length = _strlen(name);
+	value_length = _strlen(value);
 
 	if (environ[MAX_ENV_VARS - 1] != NULL)
 		return (-1);
-
-	int i;
 
 	for (i = 0; environ[i] != NULL; i++)
 	{

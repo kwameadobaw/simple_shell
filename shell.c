@@ -52,6 +52,7 @@ int main(void)
 {
 	char input[MAX_COMMAND_LENGTH];
 	size_t input_length;
+	char *prev_dir = NULL;
 
 	while (1)
 	{
@@ -80,7 +81,7 @@ int main(void)
 			int status = _atoi(input + 5);
 			exit(status);
 		}
-		if (strncmp(input, "setenv ", 7) == 0)
+		if (_strncmp(input, "setenv ", 7) == 0)
 		{
 			const chat *cmd = input + 7;
 			char *variable = strtok((char *)cmd, " ");
@@ -103,14 +104,14 @@ int main(void)
 				fprintf(stderr, "setenv: invalid arguments\n");
 			}
 		}
-		else if (strncmp(input, "unsetenv ", 9) == 0)
+		else if (_strncmp(input, "unsetenv ", 9) == 0)
 		{
 			const char *cmd = input + 9;
 			char *variable = strtok((char *)cmd, " ");
 
 			if (variable != NULL)
 			{
-				int result = _unsetenv(variable);
+				int result = unsetenv(variable);
 				if (result == 0)
 				{
 					write(STDOUT_FILENO, "unset\n", 6);
@@ -127,7 +128,7 @@ int main(void)
 						invalid arguments\n");
 			}
 		}
-		else if (strncmp(input, "cd ", 3) == 0)
+		else if (_strncmp(input, "cd ", 3) == 0)
 		{
 			const char *cmd = input + 3;
 			int success = change_directory(cmd, prev_dir, environ);
@@ -137,7 +138,7 @@ int main(void)
 				prev_dir = getcwd(NULL, 0);
 			}
 		}
-		else if (strncmp(input, "getenv ", 7) == 0)
+		else if (_strncmp(input, "getenv ", 7) == 0)
 		{
 			const char *cmd = input + 7;
 			char *value = _getenv(cmd);

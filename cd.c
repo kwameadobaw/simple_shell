@@ -19,7 +19,9 @@ int change_directory(const char *new_dir, char *prev_dir, char **env)
 	{
 		if (prev_dir != NULL)
 		{
-			printf("%s\n", prev_dir);
+			char newline = '\n';
+			write(STDOUT_FILENO, prev_dir, _strlen(prev_dir));
+			write(STDOUT_FILENO, &newline, 1);
 			chdir(prev_dir);
 		}
 	}

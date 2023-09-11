@@ -7,15 +7,17 @@
 */
 char *_getenv(const char *name)
 {
+	int name_length;
+	char **env;
+
 	if (name == NULL || environ == NULL)
 		return (NULL);
 
-	int name_length = strlen(name);
-	char **env;
+	name_length = _strlen(name);
 
 	for (env = environ; *env != NULL; env++)
 	{
-		if (strncmp(*env, name, name_length) == 0 
+		if (_strncmp(*env, name, name_length) == 0 
 				&& (*env)[name_length] == '=')
 		{
 			return (*env + name_length +1);
