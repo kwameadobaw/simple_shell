@@ -19,5 +19,7 @@ char *get_full_path(const char *command);
 char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 void handle_exit(char **input);
+int _atoi(char *s);
+int _strncmp(const char *str1, const char *str2, size_t n);
 
 #endif

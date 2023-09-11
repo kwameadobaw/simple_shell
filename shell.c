@@ -75,9 +75,9 @@ int main(void)
 			write(STDOUT_FILENO, "Goodbye!\n", 9);
 			exit(0);
 		}
-		if (strncmp(input, "exit ", 5) == 0)
+		if (_strncmp(input, "exit ", 5) == 0)
 		{
-			int status = atoi(input + 5);
+			int status = _atoi(input + 5);
 			exit(status);
 		}
 		execute_command(input);
