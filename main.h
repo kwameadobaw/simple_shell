@@ -21,5 +21,7 @@ char *_strcat(char *dest, char *src);
 void handle_exit(char **input);
 int _atoi(char *s);
 int _strncmp(const char *str1, const char *str2, size_t n);
+int unset_env(const char *variable);
+int set_env(const char *variable, const char *value);
 
 #endif

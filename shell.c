@@ -80,7 +80,30 @@ int main(void)
 			int status = _atoi(input + 5);
 			exit(status);
 		}
-		execute_command(input);
+		if (strncmp(input, "setenv ", 7) == 0)
+		{
+			const char *cmd = input + 7;
+			char *variable = strtok((char *)cmd, " ");
+			char *value = strtok(NULL, " ");
+
+			if (set_env(variable, value) == -1)
+			{
+				fprintf(stderr, "setenv: failed setenv\n");
+			}
+		}
+		else if (strncmp(input, "unsetenv ", 9) == 0)
+		{
+			const char *cmd = input + 9;
+			char *variable = strtok((char *)cmd, " ");
+			if (unset_env(variable) == -1)
+			{
+				fprintf(stderr, "unsetenv: failed unset\n");
+			}
+		}
+		else
+		{
+			execute_command(input);
+		}
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
