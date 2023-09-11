@@ -77,5 +77,5 @@ int main(void)
 		}
 		execute_command(input);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

@@ -8,11 +8,11 @@
  * string is "exit <status>", it converts the status string to an integer and
  * exists the shell with the specified status code.
 */
-void handle_exit(const char *input)
+void handle_exit(char **input)
 {
-	int status;
+	int status = 0;
 
-	status = atoi(input);
+	status = atoi(input[1]);
 
 	exit(status);
 }
