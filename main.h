@@ -10,6 +10,7 @@
 
 #define MAX_COMMAND_LENGTH 1024
 #define MAX_ARGUMENTS 64
+#define MAX_ENV_VARS 1000
 
 void execute_command(const char *input);
 int _strcmp(char *s1, char *s2);
@@ -23,5 +24,9 @@ int _atoi(char *s);
 int _strncmp(const char *str1, const char *str2, size_t n);
 int unset_env(const char *variable);
 int set_env(const char *variable, const char *value);
+int change_directory(const char *new_dir, char *prev_dir, char **env);
+extern char **environ;
+char *_getenv(const char *name);
+int _setenv(const char *name, const char *value, int overwrite);
 
 #endif

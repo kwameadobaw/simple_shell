@@ -82,22 +82,75 @@ int main(void)
 		}
 		if (strncmp(input, "setenv ", 7) == 0)
 		{
-			const char *cmd = input + 7;
+			const chat *cmd = input + 7;
 			char *variable = strtok((char *)cmd, " ");
 			char *value = strtok(NULL, " ");
 
-			if (set_env(variable, value) == -1)
+			if (variable != NULL && value != NULL)
 			{
-				fprintf(stderr, "setenv: failed setenv\n");
+				int result = setenv(variable, value, 1);
+				if (result == 0)
+				{
+					write(STDOUT_FILENO, "Env set.\n" 9);
+				}
+				else
+				{
+					fprintf(stderr, "setenv: failed setenv\n");
+				}
+			}
+			else
+			{
+				fprintf(stderr, "setenv: invalid arguments\n");
 			}
 		}
 		else if (strncmp(input, "unsetenv ", 9) == 0)
 		{
 			const char *cmd = input + 9;
 			char *variable = strtok((char *)cmd, " ");
-			if (unset_env(variable) == -1)
+
+			if (variable != NULL)
 			{
-				fprintf(stderr, "unsetenv: failed unset\n");
+				int result = _unsetenv(variable);
+				if (result == 0)
+				{
+					write(STDOUT_FILENO, "unset\n", 6);
+				}
+				else
+				{
+					fprintf(stderr, "unsetenv:
+						       	failed unset\n");
+				}
+			}
+			else
+			{
+				fprintf(stderr, "unsetenv: 
+						invalid arguments\n");
+			}
+		}
+		else if (strncmp(input, "cd ", 3) == 0)
+		{
+			const char *cmd = input + 3;
+			int success = change_directory(cmd, prev_dir, environ);
+			if (success)
+			{
+				free(prev_dir);
+				prev_dir = getcwd(NULL, 0);
+			}
+		}
+		else if (strncmp(input, "getenv ", 7) == 0)
+		{
+			const char *cmd = input + 7;
+			char *value = _getenv(cmd);
+			if (value != NULL)
+			{
+				write(STDOUT_FILENO, cmd, strlen(cmd));
+				write(STDOUT_FILENO, "=", 1);
+				write(STDOUT_FILENO, value, strlen(value));
+				write(STDOUT_FILENO, "\n", 1);
+			}
+			else
+			{
+				write(STDOUT_FILENO, "PATH absence\n", 13);
 			}
 		}
 		else
