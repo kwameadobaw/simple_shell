@@ -8,8 +8,8 @@
 ssize_t my_getline(char *input, size_t max_length)
 {
 	static char buffer[MAX_COMMAND_LENGTH];
-	static size_t buffer_position = 0;
-	static size_t buffer_size = 0;
+	static size_t buffer_position;
+	static size_t buffer_size;
 	size_t i = 0;
 	char c;
 
