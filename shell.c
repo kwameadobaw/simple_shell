@@ -78,6 +78,7 @@ int main(void)
 		if (_strncmp(input, "exit ", 5) == 0)
 		{
 			int status = _atoi(input + 5);
+
 			exit(status);
 		}
 		execute_command(input);
