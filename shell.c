@@ -81,7 +81,10 @@ int main(void)
 
 			exit(status);
 		}
-		execute_command(input);
+		else
+		{
+			execute_command(input);
+		}
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }

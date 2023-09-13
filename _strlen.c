@@ -4,9 +4,9 @@
  * @s: Pointer to the string
  * Return: Always 0
  */
-int _strlen(char *s)
+int _strlen(const char *s)
 {
-	char *p = s;
+	const char *p = s;
 
 	while (*p != '\0')
 	{
