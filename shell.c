@@ -81,6 +81,41 @@ int main(void)
 
 			exit(status);
 		}
+		else if (_strncmp(input, "setenv ", 7) == 0)
+		{
+			char *token = strtok(input, " ");
+			char *args[3];
+			int i = 0;
+			while (token != NULL)
+			{
+				args[i++] = token;
+				token = strtok(NULL, " ");
+			}
+			args[i] = NULL;
+
+			if (setenv_command(args) == 1)
+			{
+				write(STDOUT_FILENO, "Failed to set environment variable\n", 35);
+			}
+			else if (_strncmp(input, "unsetenv ", 9) == 0)
+			{
+				char *token = strtok(input, " ");
+				char *args[2];
+				int i = 0;
+				
+				while (token != NULL)
+				{
+					args[i++] = token;
+					token = strtok(NULL, " ");
+				}
+				args[i] = NULL;
+				
+				if (unsetenv_command(args) == 1)
+				{
+					write(STDOUT_FILENO, "Failed to unset environment variable\n", 37);
+				}
+			}
+		}
 		else
 		{
 			execute_command(input);

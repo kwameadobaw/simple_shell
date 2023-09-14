@@ -23,5 +23,7 @@ void handle_exit(char **input);
 int _atoi(char *s);
 int _strncmp(const char *str1, const char *str2, size_t n);
 extern char **environ;
+int setenv_command(char **args);
+int unsetenv_command(char **args);
 
 #endif
