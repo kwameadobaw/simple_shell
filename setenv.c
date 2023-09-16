@@ -1,7 +1,7 @@
 #include "main.h"
 /**
  * setenv_command - Implement the setenv command
- * @args: Array of command arguments 
+ * @args: Array of command arguments
  * Return: 0 on success, 1 on failure
 */
 int setenv_command(char **args)
