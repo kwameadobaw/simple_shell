@@ -3,7 +3,7 @@
  * execute_command - Execute a command in a child process
  * @input: The command to execute
 */
-void execute_command(const char *input)
+void execute_command(const char * const args[])
 {
 	pid_t pid;
 	int status;
@@ -17,21 +17,28 @@ void execute_command(const char *input)
 	}
 	else if (pid == 0)
 	{
-		char *args[MAX_ARGUMENTS];
-		char *token = strtok((char *)input, " ");
-		int i = 0;
-
-		while (token != NULL)
+		if (strchr(args[0], '/') == NULL)
 		{
-			args[i++] = token;
-			token = strtok(NULL, " ");
+			char *full_path = get_full_path(args[0]);
+
+			if (full_path == NULL)
+			{
+				fprintf(stderr, "Command not found: %s\n", args[0]);
+				exit(1);
+			}
+			if (execve(full_path, (char * const *)args, environ) == -1)
+			{
+				perror("Command execution failed");
+				exit(1);
+			}
 		}
-		args[i] = NULL;
-
-		if (execvp(args[0], args) == -1)
+		else
 		{
-			perror("Command execution failed");
-			exit(1);
+			if (execve(args[0], (char * const *)args, environ) == -1)
+			{
+				perror("Command execution failed");
+				exit(1);
+			}
 		}
 	}
 	else
@@ -43,6 +50,26 @@ void execute_command(const char *input)
 			write(STDOUT_FILENO, "Command execution failed\n", 26);
 		}
 	}
+}
+/**
+ * tokenize_input - Tokenize the input string based on spaces
+ * @input: The input string to tokenize
+ * @tokens: An array to store the tokens
+ * @max_tokens: Maximum number of tokens to extract
+ * Return: TYhe number of tokens extracted
+*/
+int tokenize_input(char *input, char *tokens[], int max_tokens)
+{
+	char *token;
+	int token_count = 0;
+
+	token = strtok(input, " ");
+	while (token != NULL && token_count < max_tokens)
+	{
+		tokens[token_count++] = token;
+		token = strtok(NULL, " ");
+	}
+	return (token_count);
 }
 /**
  * main - Entry point for the simple shell program
@@ -62,6 +89,7 @@ int main(void)
 			exit(1);
 		}
 		input_length = _strlen(input);
+
 		if (input_length > 0 && input[input_length - 1] == '\n')
 		{
 			input[input_length - 1] = '\0';
@@ -83,42 +111,45 @@ int main(void)
 		}
 		else if (_strncmp(input, "setenv ", 7) == 0)
 		{
-			char *token = strtok(input, " ");
 			char *args[3];
-			int i = 0;
-			while (token != NULL)
+			int token_count = tokenize_input(input, args, 3);
+		
+			if (token_count != 3)
 			{
-				args[i++] = token;
-				token = strtok(NULL, " ");
+				write(STDOUT_FILENO, "Usage: setenv VARIABLE VALUE\n", 29);
+				continue;
 			}
-			args[i] = NULL;
-
-			if (setenv_command(args) == 1)
+			if (setenv(args[1], args[2], 1) != 0)
 			{
-				write(STDOUT_FILENO, "Failed to set environment variable\n", 35);
+				perror("setenv");
 			}
-			else if (_strncmp(input, "unsetenv ", 9) == 0)
+		}
+		else if (_strncmp(input, "unsetenv ", 9) == 0)
+		{
+			char *args[2];
+			int token_count = tokenize_input(input, args, 2);
+		
+			if (token_count != 2)
 			{
-				char *token = strtok(input, " ");
-				char *args[2];
-				int i = 0;
-				
-				while (token != NULL)
-				{
-					args[i++] = token;
-					token = strtok(NULL, " ");
-				}
-				args[i] = NULL;
-				
-				if (unsetenv_command(args) == 1)
-				{
-					write(STDOUT_FILENO, "Failed to unset environment variable\n", 37);
-				}
+				write(STDOUT_FILENO, "Usage: unsetenv VARIABLE\n", 25);
+				continue;
 			}
+			if (unsetenv(args[1]) != 0)
+			{
+				perror("unsetenv");
+			}
+					
 		}
 		else
 		{
-			execute_command(input);
+			char *args[MAX_ARGUMENTS];
+			int token_count = tokenize_input(input, args, MAX_ARGUMENTS);
+		
+			if (token_count == 0)
+			{
+				continue;
+			}
+			execute_command((const char * const *)args);
 		}
 	}
 	return (0);

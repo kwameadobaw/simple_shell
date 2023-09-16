@@ -8,7 +8,7 @@
  *
  * Return: Return the value of dest
  */
-char *_strcat(char *dest, char *src)
+char *_strcat(char *dest, const char *src)
 {
 	char *dest_pt = dest;
 
