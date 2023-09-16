@@ -140,6 +140,39 @@ int main(void)
 			}
 					
 		}
+		else if (_strncmp(input, "cd", 2) == 0)
+		{
+			char *path = input + 2;
+
+			if (_strlen(path) == 0 || _strcmp(path, " ") == 0)
+			{
+				struct passwd *pw = getpwuid(getuid());
+				path = pw->pw_dir;
+			}
+			else if (_strcmp(path, "-") == 0)
+			{
+				path = getenv("OLDPWD");
+
+				if (path == NULL)
+				{
+					write(STDERR_FILENO, "OLDPWD not set\n", 15);
+					continue;
+				}
+				write(STDOUT_FILENO, path, _strlen(path));
+				write(STDOUT_FILENO, "\n", 1);
+			}
+
+			if (change_directory(path) != 0)
+			{
+				char err_message[50];
+				_strcpy(err_message, "cd: failed to cd to ");
+				_strcat(err_message, path);
+				_strcat(err_message, "\n");
+				write(STDERR_FILENO, err_message, _strlen(err_message));
+			}
+			continue;
+		}
+				
 		else
 		{
 			char *args[MAX_ARGUMENTS];
