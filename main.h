@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <errno.h>
+#include <pwd.h>
 
 #define MAX_COMMAND_LENGTH 1024
 #define MAX_ARGUMENTS 64
@@ -27,6 +29,7 @@ extern char **environ;
 int setenv_command(char **args);
 int unsetenv_command(char **args);
 char *get_full_path(const char *command);
-void print_environment();
+void print_environment(void);
+int change_directory(char *path);
 
 #endif

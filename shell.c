@@ -113,7 +113,7 @@ int main(void)
 		{
 			char *args[3];
 			int token_count = tokenize_input(input, args, 3);
-		
+
 			if (token_count != 3)
 			{
 				write(STDOUT_FILENO, "Usage: setenv VARIABLE VALUE\n", 29);
@@ -128,7 +128,7 @@ int main(void)
 		{
 			char *args[2];
 			int token_count = tokenize_input(input, args, 2);
-		
+
 			if (token_count != 2)
 			{
 				write(STDOUT_FILENO, "Usage: unsetenv VARIABLE\n", 25);
@@ -138,13 +138,44 @@ int main(void)
 			{
 				perror("unsetenv");
 			}
-					
+		}
+		else if (_strncmp(input, "cd", 2) == 0)
+		{
+			char *path = input + 2;
+
+			if (_strlen(path) == 0 || _strcmp(path, " ") == 0)
+			{
+				struct passwd *pw = getpwuid(getuid());
+				path = pw->pw_dir;
+			}
+			else if (_strcmp(path, "-") == 0)
+			{
+				path = getenv("OLDPWD");
+
+				if (path == NULL)
+				{
+					write(STDERR_FILENO, "OLDPWD not set\n", 15);
+					continue;
+				}
+				write(STDOUT_FILENO, path, _strlen(path));
+				write(STDOUT_FILENO, "\n", 1);
+			}
+
+			if (change_directory(path) != 0)
+			{
+				char err_message[50];
+				_strcpy(err_message, "cd: failed to cd to ");
+				_strcat(err_message, path);
+				_strcat(err_message, "\n");
+				write(STDERR_FILENO, err_message, _strlen(err_message));
+			}
+			continue;
 		}
 		else
 		{
 			char *args[MAX_ARGUMENTS];
 			int token_count = tokenize_input(input, args, MAX_ARGUMENTS);
-		
+
 			if (token_count == 0)
 			{
 				continue;
