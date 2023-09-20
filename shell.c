@@ -51,11 +51,11 @@ void execute_command(const char *input)
  */
 int main(void)
 {
+	char input[MAX_COMMAND_LENGTH];
+	size_t input_length;
+
 	while (1)
 	{
-		char input[MAX_COMMAND_LENGTH];
-		size_t input_length;
-
 		write(STDOUT_FILENO, "simple_shell> ", 14);
 		if (my_getline(input, sizeof(input)) == -1)
 		{
