@@ -38,7 +38,7 @@ int execute_args(char **args)
 			}
 			else
 			{
-				return (*builtin_func[i])(args);
+				return ((*builtin_func[i])(args));
 			}
 		}
 	}

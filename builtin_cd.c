@@ -27,6 +27,7 @@ int own_cd(char **args)
 	else
 	{
 		char cwd[1024];
+
 		if (getcwd(cwd, sizeof(cwd)) != NULL)
 		{
 			setenv("PWD", cwd, 1);
