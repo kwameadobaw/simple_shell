@@ -10,14 +10,17 @@ int execute_args(char **args)
 	char *builtin_func_list[] = {
 	"cd",
 	"env",
-	"help",
-	"exit"
+	"exit",
+	"setenv",
+	"unsetenv"
 	};
 
 	int (*builtin_func[])(char **) = {
 	&own_cd,
 	&own_env,
-	&own_exit
+	&own_exit,
+	&own_setenv,
+	&own_unsetenv
 	};
 
 	size_t i = 0;
@@ -29,7 +32,14 @@ int execute_args(char **args)
 	{
 		if (strcmp(args[0], builtin_func_list[i]) == 0)
 		{
-			return ((*builtin_func[i])(args));
+			if (strcmp(args[0], "exit") == 0)
+			{
+				return (own_exit(args));
+			}
+			else
+			{
+				return (*builtin_func[i])(args);
+			}
 		}
 	}
 

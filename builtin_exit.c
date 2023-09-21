@@ -10,7 +10,7 @@ int own_exit(char **args)
 	{
 		int status = atoi(args[1]);
 
-		_exit(status);
+		exit(status);
 	}
-	_exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
