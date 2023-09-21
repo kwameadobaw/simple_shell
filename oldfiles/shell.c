@@ -45,6 +45,28 @@ void execute_command(const char *input)
 		}
 	}
 }
+
+/**
+ * tokenize_input - Tokenize the input string based on spaces
+ * @input: The input string to tokenize
+ * @tokens: An array to store the tokens
+ * @max_tokens: Maximum number of tokens to extract
+ * Return: TYhe number of tokens extracted
+*/
+int tokenize_input(char *input, char *tokens[], int max_tokens)
+{
+	char *token;
+	int token_count = 0;
+
+	token = strtok(input, " ");
+	while (token != NULL && token_count < max_tokens)
+	{
+		tokens[token_count++] = token;
+		token = strtok(NULL, " ");
+	}
+	return (token_count);
+}
+
 /**
  * main - entry point
  * Return: Always 0
