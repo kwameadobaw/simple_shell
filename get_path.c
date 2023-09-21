@@ -15,7 +15,8 @@ char *get_path(char *command)
 	while (dir != NULL)
 	{
 		full_path = malloc(strlen(dir) + strlen(command) + 2);
-		snprintf(full_path, strlen(dir) + strlen(command) + 2, "%s/%s", dir, command);
+		snprintf(full_path, strlen(dir) + strlen(command) + 2, "%s/%s",
+				dir, command);
 
 		if (stat(full_path, &buffer) == 0 &&
 				S_ISREG(buffer.st_mode) &&
