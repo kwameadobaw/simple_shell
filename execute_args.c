@@ -11,8 +11,6 @@ int execute_args(char **args)
 	"cd",
 	"env",
 	"exit",
-	"setenv",
-	"unsetenv"
 	};
 
 	int (*builtin_func[])(char **) = {
