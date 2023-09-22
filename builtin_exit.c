@@ -6,11 +6,13 @@
  */
 int own_exit(char **args)
 {
+	int status = 0;
+
 	if (args[1] != NULL)
 	{
-		int status = atoi(args[1]);
+		status = _atoi(args[1]);
 
 		exit(status);
 	}
-	exit(EXIT_SUCCESS);
+	exit(status);
 }

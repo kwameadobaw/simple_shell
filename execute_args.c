@@ -30,9 +30,9 @@ int execute_args(char **args)
 
 	for (; i < sizeof(builtin_func_list) / sizeof(char *); i++)
 	{
-		if (strcmp(args[0], builtin_func_list[i]) == 0)
+		if (_strcmp(args[0], builtin_func_list[i]) == 0)
 		{
-			if (strcmp(args[0], "exit") == 0)
+			if (_strcmp(args[0], "exit") == 0)
 			{
 				return (own_exit(args));
 			}
