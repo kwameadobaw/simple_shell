@@ -25,6 +25,7 @@ char *read_stream(void);
 char *get_path(char *command);
 int _atoi(char *s);
 int _strcmp(char *s1, char *s2);
+int _strlen(const char *s);
 
 /* Builtin Functions */
 int own_cd(char **args);

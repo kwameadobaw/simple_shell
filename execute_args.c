@@ -36,6 +36,10 @@ int execute_args(char **args)
 			{
 				return (own_exit(args));
 			}
+			else if (_strcmp(args[0], "env") == 0)
+			{
+				return (own_env(args));
+			}
 			else
 			{
 				return ((*builtin_func[i])(args));

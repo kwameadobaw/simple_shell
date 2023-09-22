@@ -10,14 +10,18 @@ int own_env(char **args)
 
 	while (*env_var)
 	{
-		size_t len = strlen(*env_var);
+		char *env_str = *env_var;
+		size_t len = _strlen(env_str);
 
-		write(STDOUT_FILENO, *env_var, len);
-		write(STDOUT_FILENO, "\n", 1);
+		if (len > 0)
+		{
+			write(STDOUT_FILENO, env_str, len);
+			write(STDOUT_FILENO, "\n", 1);
+		}
 
 		env_var++;
 	}
 	(void)args;
 
-	return (1);
+	return (0);
 }
