@@ -6,13 +6,19 @@
  */
 int own_exit(char **args)
 {
-	int status = 0;
-
 	if (args[1] != NULL)
 	{
-		status = _atoi(args[1]);
+		char *endptr;
+		long status = strtol(args[1], &endptr, 10);
+	/*	status = _atoi(args[1]); */
 
-		exit(status);
+		/*exit(status);*/
+		if (*endptr != '\0')
+		{
+			fprintf(stderr, "Usage: exit status\n");
+			return (1);
+		}
+		exit((int)status);
 	}
-	exit(status);
+	exit(0);
 }
